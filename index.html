@@ -24,14 +24,16 @@
             <div class="text-2xl font-bold text-teal-600 flex items-center gap-2 cursor-pointer" onclick="showSection('home')">
                 🩺 CareLink
             </div>
-            <div class="space-x-6 hidden md:flex">
-                <button onclick="showSection('home')" class="hover:text-teal-600 font-medium">หน้าแรก</button>
-                <button onclick="showSection('services')" class="hover:text-teal-600 font-medium">บริการของเรา & รายละเอียด</button>
-                <button onclick="scrollToNurses()" class="hover:text-teal-600 font-medium">หาผู้ดูแล / พี่เลี้ยง</button>
+            
+            <!-- เมนูหลักฝั่งซ้าย -->
+            <div id="mainNavLinks" class="space-x-6 hidden md:flex">
+                <button id="navHomeBtn" onclick="showSection('home')" class="hover:text-teal-600 font-medium">หน้าแรก</button>
+                <button id="navServicesBtn" onclick="showSection('services')" class="hover:text-teal-600 font-medium">บริการของเรา & รายละเอียด</button>
+                <button id="navFindBtn" onclick="scrollToNurses()" class="hover:text-teal-600 font-medium">หาผู้ดูแล / พี่เลี้ยง</button>
             </div>
+
             <div class="flex items-center gap-2">
-                
-                <!-- 1. ปุ่มสำหรับผู้เยี่ยมชม (ยังไม่ล็อกอินใครเลย) -->
+                <!-- 1. ปุ่มสำหรับผู้เยี่ยมชม -->
                 <div id="guestAuthArea" class="flex items-center gap-2">
                     <button onclick="openCustomerAuth()" class="text-teal-600 border border-teal-600 px-4 py-2 rounded-full hover:bg-teal-50 transition text-sm font-medium">
                         เข้าสู่ระบบ / สมัครสมาชิก (ผู้จอง)
@@ -47,7 +49,7 @@
                     </button>
                 </div>
 
-                <!-- 2. เมนูสำหรับ "ผู้ใช้บริการ (ผู้จอง)" เมื่อล็อกอินแล้ว -->
+                <!-- 2. เมนูสำหรับ "ผู้ใช้บริการ (ผู้จอง)" -->
                 <div id="customerProfileArea" class="hidden flex items-center gap-2">
                     <button onclick="openReportModal('customer')" class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-red-100 transition flex items-center gap-1">
                         🚨 แจ้งปัญหาบริการ
@@ -61,8 +63,8 @@
                     <button onclick="logoutCustomer()" class="text-slate-400 hover:text-red-500 text-xs font-medium">ออกจากระบบ</button>
                 </div>
 
-                <!-- 3. เมนูสำหรับ "ผู้ให้บริการ" เมื่อล็อกอินแล้ว -->
-                <div id="providerProfileArea" class="hidden flex items-center gap-2">
+                <!-- 3. เมนูสำหรับ "ผู้ให้บริการ" -->
+                <div id="providerProfileArea" class="hidden flex items-center gap-3">
                     <button onclick="openReportModal('provider')" class="bg-red-50 text-red-600 border border-red-200 px-3 py-1.5 rounded-full text-xs font-semibold hover:bg-red-100 transition flex items-center gap-1">
                         🚨 แจ้งปัญหาเคสงาน
                     </button>
@@ -74,11 +76,12 @@
                         📥 กล่องข้อความ
                     </button>
                     <button onclick="showSection('provider-dashboard')" class="bg-emerald-50 text-emerald-700 border border-emerald-200 px-3 py-1.5 rounded-full text-xs font-semibold flex items-center gap-1.5 hover:bg-emerald-100 transition">
-                        <span>🩺</span> <span id="navProviderName">ผู้ให้บริการ</span> (แดชบอร์ดงาน)
+                        <span>🩺</span> <span id="navProviderName">ผู้ให้บริการ</span>
                     </button>
-                    <button onclick="logoutProvider()" class="text-slate-400 hover:text-red-500 text-xs font-medium">ออกจากระบบ</button>
+                    <button onclick="logoutProvider()" class="text-slate-400 hover:text-red-500 text-xs font-medium border-l pl-2">
+                        ออกจากระบบ
+                    </button>
                 </div>
-
             </div>
         </div>
     </nav>
@@ -112,11 +115,11 @@
         <main class="max-w-6xl mx-auto px-4 py-12" id="nurses">
             <div class="flex justify-between items-center mb-6">
                 <div>
-                    <h2 id="resultTitle" class="text-2xl font-bold text-slate-700">บุคลากรและพี่เลี้ยงพร้อมให้บริการ (กว่า 50+ ท่านในพื้นที่)</h2>
-                    <p id="resultSub" class="text-xs text-slate-500 mt-1">กำลังแสดงผลผู้ให้บริการทั้งหมดในระบบ</p>
+                    <h2 id="resultTitle" class="text-2xl font-bold text-slate-700">บุคลากรและพี่เลี้ยงพร้อมให้บริการ (กว่า 6,000+ ท่านทั่วประเทศ)</h2>
+                    <p id="resultSub" class="text-xs text-slate-500 mt-1">กำลังแสดงผลผู้ให้บริการทั้งหมดในระบบ (รวมผู้ให้บริการลงทะเบียนจริงและตัวอย่าง 20+ ท่านต่ออาชีพ ครอบคลุมทุกจังหวัด)</p>
                 </div>
                 <div class="text-sm text-teal-600 font-semibold bg-teal-50 px-3 py-1.5 rounded-xl border border-teal-200">
-                    รวมกว่า 3,850+ ท่านทั่วประเทศ
+                    รวมทุก 77 จังหวัดทั่วไทย
                 </div>
             </div>
             
@@ -147,7 +150,7 @@
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-cyan-500 space-y-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 font-bold text-xl">🧑‍‍⚕️</div>
+                    <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 font-bold text-xl">🧑‍⚕️</div>
                     <div>
                         <h3 class="font-bold text-lg text-slate-800">ผู้ช่วยพยาบาล (PN - Practical Nurse)</h3>
                         <p class="text-xs text-cyan-600 font-medium">อัตราค่าบริการเริ่มต้น 600 - 800 บาท / กะ หรือรายชั่วโมง</p>
@@ -227,7 +230,6 @@
             </div>
 
             <div class="space-y-6">
-                <!-- งานปัจจุบัน -->
                 <div class="space-y-4">
                     <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
                         <span>📅</span> รายการจองและสถานะงานปัจจุบัน
@@ -235,7 +237,6 @@
                     <div id="myBookingListContainer" class="space-y-3"></div>
                 </div>
 
-                <!-- งานที่จบแล้ว -->
                 <div class="space-y-4 pt-4 border-t">
                     <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
                         <span>✅</span> ประวัติรายการจองที่เสร็จสิ้นแล้ว (จบงาน)
@@ -295,7 +296,7 @@
                 </div>
                 <div class="bg-amber-50/60 border border-amber-100 p-4 rounded-xl">
                     <p class="text-xs text-amber-700 font-medium">คะแนนรีวิวเฉลี่ย</p>
-                    <p class="text-2xl font-bold text-amber-900 mt-1">⭐ 5.0 (50+)</p>
+                    <p id="provRatingDisplay" class="text-2xl font-bold text-amber-900 mt-1">ยังไม่มีรีวิว</p>
                 </div>
                 <div class="bg-slate-50 border p-4 rounded-xl">
                     <p class="text-xs text-slate-500 font-medium">ใบวิชาชีพ / สถานะ</p>
@@ -303,7 +304,6 @@
                 </div>
             </div>
 
-            <!-- หมวดงานปัจจุบัน & กดจบงาน -->
             <div class="space-y-4 pt-4 border-t">
                 <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
                     <span>📅</span> รายละเอียดคำขอจองงานใหม่ และงานที่กำลังปฏิบัติงาน
@@ -311,7 +311,6 @@
                 <div id="providerJobListContainer" class="space-y-3"></div>
             </div>
 
-            <!-- หมวดงานที่เสร็จสิ้นแล้ว -->
             <div class="space-y-4 pt-4 border-t">
                 <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
                     <span>✅</span> ประวัติงานที่เสร็จสิ้นแล้ว (โอนเงินเข้ากระเป๋าเรียบร้อย)
@@ -365,7 +364,7 @@
                 </div>
             </div>
 
-            <!-- แก้ไขโปรไฟล์และอัตราค่าบริการ -->
+            <!-- ตั้งค่าโปรไฟล์ -->
             <div class="pt-4 border-t space-y-3">
                 <h3 class="font-bold text-base text-slate-800">⚙️ ตั้งค่าโปรไฟล์และเรทค่าบริการของคุณ</h3>
                 <div class="grid grid-cols-1 md:grid-cols-3 gap-3">
@@ -388,7 +387,7 @@
         </div>
     </div>
 
-    <!-- หน้า Dashboard สำหรับแอดมินหลังบ้าน (Admin Dashboard) -->
+    <!-- หน้า Dashboard สำหรับแอดมินหลังบ้าน -->
     <div id="section-admin-dashboard" class="max-w-6xl mx-auto px-4 py-10 hidden space-y-6">
         <div class="bg-slate-900 text-white p-6 rounded-2xl shadow-md flex justify-between items-center">
             <div>
@@ -401,7 +400,6 @@
             </button>
         </div>
 
-        <!-- สถิติตัวเลขการเงินหลังบ้าน -->
         <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
             <div class="bg-white p-5 rounded-2xl border shadow-sm">
                 <p class="text-xs font-medium text-slate-500">💳 ยอดเงินถือส่วนกลาง (Escrow Balance)</p>
@@ -409,9 +407,9 @@
                 <p class="text-[11px] text-slate-400 mt-1">ชำระแล้วจากผู้จอง แต่ยังไม่ถึงเวลาโอนให้ผู้บริการ</p>
             </div>
             <div class="bg-white p-5 rounded-2xl border shadow-sm">
-                <p class="text-xs font-medium text-slate-500">⏳ รอดำเนินการโอน (กำลังโอน 2-5 นาที)</p>
+                <p class="text-xs font-medium text-slate-500">⏳ รอดำเนินการโอน (ผู้ให้บริการกดจบงานแล้ว)</p>
                 <p id="adminPendingTransfersCount" class="text-2xl font-bold text-amber-600 mt-1">0 เคส</p>
-                <p class="text-[11px] text-slate-400 mt-1">ผู้ให้บริการกดจบงานแล้ว อยู่ระหว่างการโอนเงิน</p>
+                <p class="text-[11px] text-slate-400 mt-1">รอแอดมินกดอนุมัติปล่อยเงินเข้า Wallet</p>
             </div>
             <div class="bg-white p-5 rounded-2xl border shadow-sm">
                 <p class="text-xs font-medium text-slate-500">🚨 รายการแจ้งปัญหาจากผู้ใช้บริการ/ผู้ให้บริการ</p>
@@ -420,7 +418,6 @@
             </div>
         </div>
 
-        <!-- รายการสั่งโอนเงินของแอดมิน (Escrow Transfer Queue) -->
         <div class="bg-white p-6 rounded-2xl border shadow-sm space-y-4">
             <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
                 <span>💸</span> รายการเงินโอนส่วนกลางที่รอดำเนินการปล่อยเงิน (Escrow Transfer Queue)
@@ -430,10 +427,9 @@
             </div>
         </div>
 
-        <!-- ศูนย์จัดการข้อร้องเรียน/แจ้งปัญหาการบริการ (Ticket Support System) -->
         <div class="bg-white p-6 rounded-2xl border shadow-sm space-y-4">
             <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
-                <span>💬</span> รายการแจ้งปัญหาและการติดต่อช่วยเหลือจากผู้ใช้งาน (Customer & Provider Support Tickets)
+                <span>💬</span> รายการแจ้งปัญหาและการติดต่อช่วยเหลือจากผู้ใช้งาน
             </h3>
             <div id="adminSupportTicketsContainer" class="space-y-3">
                 <p class="text-xs text-slate-400 text-center py-4">ไม่มีรายการแจ้งปัญหาเข้ามาในขณะนี้</p>
@@ -441,7 +437,7 @@
         </div>
     </div>
 
-    <!-- Modal แจ้งปัญหาบริการ (Support Modal) -->
+    <!-- Modals ต่างๆ -->
     <div id="reportProblemModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl">
             <button onclick="closeReportModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -477,7 +473,6 @@
         </div>
     </div>
 
-    <!-- Modal Popup การแจ้งเตือนงานเข้า (Notification Modal) -->
     <div id="notificationModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl max-h-[80vh] flex flex-col">
             <button onclick="closeNotificationModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -486,13 +481,10 @@
             </h3>
             <p class="text-xs text-slate-500 mb-4">รายการคำขอจองคิวงานที่รอการตอบรับจากคุณ</p>
 
-            <div id="notificationListContainer" class="flex-1 overflow-y-auto space-y-2.5 pr-1">
-                <!-- รายการงานแจ้งเตือนจะโชว์ที่นี่ -->
-            </div>
+            <div id="notificationListContainer" class="flex-1 overflow-y-auto space-y-2.5 pr-1"></div>
         </div>
     </div>
 
-    <!-- Modal Popup กล่องข้อความรวม (Inbox Modal) -->
     <div id="inboxModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-lg w-full p-6 relative shadow-xl max-h-[80vh] flex flex-col">
             <button onclick="closeInboxModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -501,13 +493,10 @@
             </h3>
             <p class="text-xs text-slate-500 mb-4">รายการการสนทนาทั้งหมดของคุณตามรหัสการจอง</p>
 
-            <div id="inboxListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1">
-                <!-- รายการแชทจะแสดงผลที่นี่ผ่าน JS -->
-            </div>
+            <div id="inboxListContainer" class="flex-1 overflow-y-auto space-y-2 pr-1"></div>
         </div>
     </div>
 
-    <!-- Modal Popup แสดงประวัติ -->
     <div id="profileModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-2xl w-full p-6 relative shadow-xl max-h-[90vh] overflow-y-auto">
             <button onclick="closeProfile()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -526,7 +515,7 @@
                     <p>• เลขที่ใบอนุญาต/ใบประกาศ: <span id="modalId" class="font-mono font-semibold text-slate-800"></span></p>
                     <p>• อายุและประสบการณ์: <span id="modalExp" class="font-semibold text-emerald-700 bg-emerald-50 px-2 py-0.5 rounded-full border border-emerald-200"></span></p>
                     <p>• สถานที่ทำงานเดิม / แหล่งฝึกอบรม: <span class="font-semibold text-slate-800">โรงพยาบาลรัฐ / รพ.เอกชนชั้นนำ</span></p>
-                    <p>• คะแนนความพึงพอใจ: <span id="modalRating" class="font-semibold text-slate-800">⭐ 4.9 (50+ รีวิว)</span></p>
+                    <p>• คะแนนความพึงพอใจ: <span id="modalRating" class="font-semibold text-slate-800"></span></p>
                     <p>• อัตราค่าบริการ: <span id="modalRate" class="font-semibold text-teal-700"></span></p>
                 </div>
 
@@ -542,13 +531,13 @@
 
                 <div class="border-t pt-4 space-y-3">
                     <div class="flex justify-between items-center">
-                        <p class="font-bold text-slate-800 flex items-center gap-1.5"><span>💬</span> รีวิวประสบการณ์จริงจากผู้ใช้บริการ (มากกว่า 10+ รีวิว)</p>
+                        <p class="font-bold text-slate-800 flex items-center gap-1.5"><span>💬</span> รีวิวประสบการณ์จริงจากผู้ใช้บริการ</p>
                         <span class="text-xs bg-emerald-50 text-emerald-600 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">✓ ยืนยันตัวตนแล้วทั้งหมด</span>
                     </div>
                     <div class="space-y-3 max-h-80 overflow-y-auto pr-1" id="reviewListContainer"></div>
 
                     <div class="bg-teal-50/40 p-3 rounded-xl border border-teal-100 mt-3">
-                        <p class="text-xs font-bold text-teal-900 mb-2">✍️️ เพิ่มรีวิวประสบการณ์ของคุณ</p>
+                        <p class="text-xs font-bold text-teal-900 mb-2">✍ เพิ่มรีวิวประสบการณ์ของคุณ</p>
                         <input type="text" id="reviewerName" placeholder="ชื่อของคุณ (เช่น คุณกุล, พี่เอ)" class="w-full p-2 border rounded-lg text-xs mb-2 bg-white">
                         <textarea id="reviewText" rows="2" placeholder="เขียนเล่าความประทับใจและความถนัดของผู้ให้บริการ..." class="w-full p-2 border rounded-lg text-xs mb-2 bg-white"></textarea>
                         <button onclick="submitReview()" class="bg-teal-600 text-white px-4 py-1.5 rounded-lg text-xs hover:bg-teal-700 transition font-medium">ส่งรีวิว</button>
@@ -560,11 +549,10 @@
         </div>
     </div>
 
-    <!-- Modal หน้าจอการจอง -->
+    <!-- Modal จองบริการ -->
     <div id="bookingModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xl w-full p-6 relative shadow-xl max-h-[90vh] overflow-y-auto">
             <button onclick="closeBooking()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
-            
             <h3 class="font-bold text-xl text-slate-800 mb-1">📅 ฟอร์มยืนยันการจองบริการ</h3>
             <p class="text-xs text-slate-500 mb-4">กรุณากรอกข้อมูลสถานที่และรายละเอียดผู้รับบริการให้ครบถ้วน</p>
 
@@ -596,7 +584,6 @@
                     </div>
                 </div>
 
-                <!-- ส่วนสำหรับการจองรายชั่วโมง (ระบุจำนวนชั่วโมง + ช่วงเวลา) -->
                 <div id="hourlyInputContainer" class="hidden bg-teal-50/40 p-3.5 rounded-xl border border-teal-100 space-y-3">
                     <div>
                         <label class="block text-xs font-semibold text-slate-700 mb-1">ระบุจำนวนชั่วโมงที่ต้องการจอง</label>
@@ -646,7 +633,7 @@
         </div>
     </div>
 
-    <!-- Modal หน้าจอการชำระเงิน -->
+    <!-- Modal ชำระเงิน -->
     <div id="paymentModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl">
             <button onclick="closePayment()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -673,7 +660,7 @@
                 <hr class="my-1">
                 <div class="flex justify-between text-sm font-bold">
                     <span>ยอดรวมสุทธิ:</span>
-                    <span id="payTotalAmount" class="text-teal-600">950 บาท (รวมค่าบริการระบบ)</span>
+                    <span id="payTotalAmount" class="text-teal-600"></span>
                 </div>
             </div>
 
@@ -692,7 +679,7 @@
         </div>
     </div>
 
-    <!-- Modal เข้าสู่ระบบ / สมัครสมาชิก (ผู้จอง) -->
+    <!-- Modal เข้าสู่ระบบผู้จอง -->
     <div id="customerAuthModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl">
             <button onclick="closeCustomerAuth()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -728,7 +715,7 @@
         </div>
     </div>
 
-    <!-- Modal สมัครเป็นผู้ให้บริการ -->
+    <!-- Modal สมัครสมาชิกผู้ให้บริการ -->
     <div id="registerModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-xl w-full p-6 relative shadow-xl max-h-[90vh] overflow-y-auto">
             <button onclick="closeRegister()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -856,7 +843,7 @@
         </div>
     </div>
 
-    <!-- Modal เข้าสู่ระบบสำหรับผู้ให้บริการ -->
+    <!-- Modal เข้าสู่ระบบผู้ให้บริการ -->
     <div id="providerLoginModal" class="fixed inset-0 bg-black/50 hidden z-50 flex items-center justify-center p-4">
         <div class="bg-white rounded-2xl max-w-md w-full p-6 relative shadow-xl">
             <button onclick="closeProviderLogin()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600 font-bold text-xl">✕</button>
@@ -885,7 +872,7 @@
         </div>
     </div>
 
-    <!-- 💬 หน้าต่างแชทเดี่ยว -->
+    <!-- 💬 หน้าต่างแชท -->
     <div id="chatWindow" class="fixed bottom-4 right-4 w-96 bg-white rounded-2xl shadow-2xl border border-gray-200 flex flex-col h-[500px] overflow-hidden z-55 hidden">
         <div class="bg-teal-700 text-white px-4 py-3 flex items-center justify-between">
             <div class="flex items-center space-x-3">
@@ -901,9 +888,7 @@
             <button onclick="closeChat()" class="text-white hover:text-gray-200 text-xl font-bold">&times;</button>
         </div>
 
-        <div id="chatMessagesArea" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 text-xs">
-            <!-- ข้อความแชทจะถูกโหลดแสดงผลผ่าน JavaScript -->
-        </div>
+        <div id="chatMessagesArea" class="flex-1 p-4 overflow-y-auto space-y-3 bg-gray-50 text-xs"></div>
 
         <div class="p-3 bg-white border-t border-gray-200 flex items-center space-x-2">
             <input type="text" id="chatInputMessage" placeholder="พิมพ์ข้อความที่นี่..." class="flex-1 border border-gray-300 rounded-full px-4 py-2 text-xs focus:outline-none focus:border-teal-500" onkeypress="handleChatKeyPress(event)">
@@ -918,10 +903,17 @@
         <p>&copy; 2026 CareLink Platform. ระบบจับคู่บุคลากรทางการแพทย์และพี่เลี้ยงเด็กครอบคลุม 77 จังหวัดทั่วไทย</p>
     </footer>
 
-    <!-- JavaScript ประมวลผลและจัดการข้อมูลถาวร -->
+    <!-- JavaScript -->
     <script>
         const provinces = [
             "กรุงเทพมหานคร", "กระบี่", "กาญจนบุรี", "กาฬสินธุ์", "กำแพงเพชร", "ขอนแก่น", "จันทบุรี", "ฉะเชิงเทรา", "ชลบุรี", "ชัยนาท", "ชัยภูมิ", "ชุมพร", "ตรัง", "ตราด", "ตาก", "นครนายก", "นครปฐม", "นครพนม", "นครราชสีมา", "นครศรีธรรมราช", "นครสวรรค์", "นนทบุรี", "นราธิวาส", "น่าน", "บึงกาฬ", "บุรีรัมย์", "ปทุมธานี", "ประจวบคีรีขันธ์", "ปราจีนบุรี", "ปัตตานี", "พระนครศรีอยุธยา", "พะเยา", "พังงา", "พัทลุง", "พิจิตร", "พิษณุโลก", "เพชรบุรี", "เพชรบูรณ์", "แพร่", "ภูเก็ต", "มหาสารคาม", "มุกดาหาร", "ยะลา", "ยโสธร", "ร้อยเอ็ด", "ระนอง", "ระยอง", "ราชบุรี", "ลพบุรี", "ลำปาง", "ลำพูน", "เลย", "ศรีสะเกษ", "สกลนคร", "สงขลา", "สตูล", "สมุทรปราการ", "สมุทรสงคราม", "สมุทรสาคร", "สระแก้ว", "สระบุรี", "สิงห์บุรี", "สุโขทัย", "สุพรรณบุรี", "สุราษฎร์ธานี", "สุรินทร์", "หนองคาย", "หนองบัวลำภู", "อ่างทอง", "อำนาจเจริญ", "อุดรธานี", "อุตรดิตถ์", "อุทัยธานี", "อุบลราชธานี", "เชียงราย", "เชียงใหม่", "แม่ฮ่องสอน"
+        ];
+
+        const rolesMaster = [
+            { title: "พยาบาลวิชาชีพ (RN)", code: "RN", rate: "1,000 บาท/กะ", numRate: 1000, icon: "👩‍⚕️" },
+            { title: "ผู้ช่วยพยาบาล (PN)", code: "PN", rate: "750 บาท/กะ", numRate: 750, icon: "🧑‍⚕️" },
+            { title: "Caregiver (ผู้ดูแลผู้สูงอายุ)", code: "CG", rate: "600 บาท/กะ", numRate: 600, icon: "👵" },
+            { title: "พี่เลี้ยงเด็ก / Babysitter", code: "BABY", rate: "700 บาท/กะ", numRate: 700, icon: "👶" }
         ];
 
         const provinceSelect = document.getElementById('provinceSelect');
@@ -965,34 +957,61 @@
             ]
         };
 
-        const defaultWannaProvider = {
-            id: "PN-กาญจนบุรี-WANNA",
-            phone: "0973321100",
-            name: "คุณวรรณา ศรีสุข",
-            birthDate: "1993-08-12",
-            age: 33,
-            role: "ผู้ช่วยพยาบาล (PN)",
-            shortRole: "PN",
-            province: "กาญจนบุรี",
-            exp: "6 ปี",
-            licenseId: "PN-88912",
-            rating: "⭐ 5.0 (50+ รีวิว)",
-            desc: "เชี่ยวชาญการดูแลผู้ป่วยติดเตียง วัดสัญญาณชีพ ทำความสะอาด และกายภาพฟื้นฟู",
-            rate: "750 บาท/กะ",
-            numericRate: 750,
-            icon: "🧑‍⚕️",
-            bankName: "ธนาคารกรุงเทพ",
-            bankAccount: "097-332-1100",
-            bankOwner: "คุณวรรณา ศรีสุข",
-            reviews: reviewsMaster["PN"],
-            isVerified: true
-        };
+        // ผู้ให้บริการสุ่มตัวอย่าง
+        const sampleFirstNames = ["สมศรี", "มานพ", "ก้อย", "มิว", "สุดา", "วิชัย", "กุล", "นิรมล", "ธนกร", "ปิยะ", "วรรณา", "อารียา", "นพดล", "ศิริพร", "กมลชนก", "ณัฐพงษ์", "พิมล", "ศรัณย์", "ชลธิชา", "กิตติ"];
+        const sampleLastNames = ["ใจดี", "รักกิจ", "สุขสบาย", "มั่นคง", "พงษ์สุวรรณ", "เจริญสุข", "คงคา", "ศรีสุข", "วงษ์สว่าง", "สมบูรณ์", "พรหมดี", "วิเศษกุล"];
 
-        let allProviders = JSON.parse(localStorage.getItem('carelink_providers')) || [];
+        function generateAllProvinceSampleProviders() {
+            let samples = [];
+            let counter = 1;
+
+            provinces.forEach(prov => {
+                rolesMaster.forEach(roleObj => {
+                    for (let i = 1; i <= 20; i++) {
+                        let fName = sampleFirstNames[(counter + i) % sampleFirstNames.length];
+                        let lName = sampleLastNames[(counter + i) % sampleLastNames.length];
+                        let birthYear = 1985 + ((counter + i) % 15);
+                        let birthDateStr = `${birthYear}-06-15`;
+
+                        samples.push({
+                            id: `SAMPLE-${roleObj.code}-${prov}-${counter}-${i}`,
+                            phone: `08${Math.floor(10000000 + Math.random() * 90000000)}`,
+                            name: `คุณ${fName} ${lName}`,
+                            birthDate: birthDateStr,
+                            age: calculateAge(birthDateStr),
+                            role: roleObj.title,
+                            shortRole: roleObj.code,
+                            province: prov,
+                            exp: `${((counter + i) % 8) + 1} ปี`,
+                            licenseId: `${roleObj.code}-${Math.floor(10000 + Math.random() * 90000)}`,
+                            rating: "⭐ 4.9 (50+ รีวิว)",
+                            desc: `มีความเชี่ยวชาญพิเศษด้าน${roleObj.title} และพร้อมให้บริการในพื้นที่จังหวัด${prov}`,
+                            rate: roleObj.rate,
+                            numericRate: roleObj.numRate,
+                            icon: roleObj.icon,
+                            bankName: "ธนาคารกสิกรไทย",
+                            bankAccount: "123-4-56789-0",
+                            bankOwner: `คุณ${fName} ${lName}`,
+                            reviews: reviewsMaster[roleObj.code] || reviewsMaster["RN"],
+                            isVerified: true,
+                            isSample: true,
+                            wallet: 0
+                        });
+                    }
+                    counter++;
+                });
+            });
+
+            return samples;
+        }
+
+        let registeredProviders = JSON.parse(localStorage.getItem('carelink_providers')) || [];
+        const sampleProviders = generateAllProvinceSampleProviders();
+        let allProviders = [...registeredProviders, ...sampleProviders];
+
         let currentProviderSession = JSON.parse(localStorage.getItem('carelink_current_provider')) || null;
         let customerBookings = JSON.parse(localStorage.getItem('carelink_bookings')) || [];
         let withdrawalHistory = JSON.parse(localStorage.getItem('carelink_withdrawals')) || [];
-        let walletBalance = parseFloat(localStorage.getItem('carelink_provider_wallet')) || 0;
         
         let adminReports = JSON.parse(localStorage.getItem('carelink_admin_reports')) || [];
         let adminEscrowTransfers = JSON.parse(localStorage.getItem('carelink_escrow_transfers')) || [];
@@ -1000,65 +1019,7 @@
         let loggedInCustomerName = localStorage.getItem('carelink_customer_name') || null;
         let loggedInCustomerPhone = localStorage.getItem('carelink_customer_phone') || null;
 
-        const expPool = ["1 ปี", "2 ปี", "3 ปี", "4 ปี", "5 ปี", "6 ปี", "7 ปี", "8 ปี", "9 ปี", "10 ปีขึ้นไป"];
-
-        if (allProviders.length === 0) {
-            allProviders.push(defaultWannaProvider);
-            
-            const firstNames = ["สมศรี", "มานพ", "ก้อย", "มิว", "สุดา", "วิชัย", "กุล", "นิรมล", "ธนกร", "ปิยะ"];
-            const lastNames = ["ใจดี", "รักกิจ", "สุขสบาย", "มั่นคง", "พงษ์สุวรรณ", "เจริญสุข", "คงคา"];
-            const roles = [
-                { title: "พยาบาลวิชาชีพ (RN)", code: "RN", rate: "1,000 บาท/กะ", numRate: 1000, icon: "👩‍⚕️" },
-                { title: "ผู้ช่วยพยาบาล (PN)", code: "PN", rate: "750 บาท/กะ", numRate: 750, icon: "🧑‍⚕️" },
-                { title: "Caregiver (ผู้ดูแลผู้สูงอายุ)", code: "CG", rate: "600 บาท/กะ", numRate: 600, icon: "👵" },
-                { title: "พี่เลี้ยงเด็ก / Babysitter", code: "BABY", rate: "700 บาท/กะ", numRate: 700, icon: "👶" }
-            ];
-
-            let counter = 0;
-            provinces.slice(0, 10).forEach(prov => {
-                for (let i = 1; i <= 2; i++) {
-                    counter++;
-                    let fName = firstNames[counter % firstNames.length];
-                    let lName = lastNames[counter % lastNames.length];
-                    let roleObj = roles[counter % roles.length];
-                    
-                    let birthYear = 1980 + (counter * 3 % 20);
-                    let birthDateStr = `${birthYear}-05-15`;
-
-                    allProviders.push({
-                        id: `${roleObj.code}-${prov}-${i}`,
-                        phone: `08${Math.floor(10000000 + Math.random() * 90000000)}`,
-                        name: `คุณ${fName} ${lName}`,
-                        birthDate: birthDateStr,
-                        age: calculateAge(birthDateStr),
-                        role: roleObj.title,
-                        shortRole: roleObj.code,
-                        province: prov,
-                        exp: expPool[counter % expPool.length],
-                        licenseId: `${roleObj.code}-${Math.floor(10000 + Math.random() * 90000)}`,
-                        rating: "⭐ 4.9 (50+ รีวิว)",
-                        desc: `มีความเชี่ยวชาญพิเศษและความถนัดในการปฏิบัติงานในพื้นที่จังหวัด${prov}`,
-                        rate: roleObj.rate,
-                        numericRate: roleObj.numRate,
-                        icon: roleObj.icon,
-                        bankName: "ธนาคารกสิกรไทย",
-                        bankAccount: "123-4-56789-0",
-                        bankOwner: `คุณ${fName} ${lName}`,
-                        reviews: reviewsMaster[roleObj.code] || reviewsMaster["RN"],
-                        isVerified: true
-                    });
-                }
-            });
-            saveProvidersToStorage();
-        }
-
-        const providerJobsMaster = {
-            "RN": [],
-            "PN": [],
-            "CG": [],
-            "BABY": []
-        };
-
+        const providerJobsMaster = { "RN": [], "PN": [], "CG": [], "BABY": [] };
         let providerJobs = JSON.parse(localStorage.getItem('carelink_provider_jobs')) || JSON.parse(JSON.stringify(providerJobsMaster));
 
         function saveJobsToStorage() {
@@ -1066,11 +1027,7 @@
         }
 
         function saveProvidersToStorage() {
-            localStorage.setItem('carelink_providers', JSON.stringify(allProviders));
-        }
-
-        function saveWalletToStorage() {
-            localStorage.setItem('carelink_provider_wallet', walletBalance.toString());
+            localStorage.setItem('carelink_providers', JSON.stringify(registeredProviders));
         }
 
         function saveReportsToStorage() {
@@ -1082,7 +1039,8 @@
         }
 
         function updateWalletUI() {
-            const formatted = walletBalance.toLocaleString() + ' บาท';
+            let currentWallet = currentProviderSession ? (currentProviderSession.wallet || 0) : 0;
+            const formatted = currentWallet.toLocaleString() + ' บาท';
             if (document.getElementById('walletBalance')) document.getElementById('walletBalance').textContent = formatted;
             if (document.getElementById('walletBalanceSub')) document.getElementById('walletBalanceSub').textContent = formatted;
         }
@@ -1107,27 +1065,35 @@
 
             pageItems.forEach(p => {
                 let card = document.createElement('div');
-                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex flex-col justify-between";
+                card.className = "bg-white p-5 rounded-2xl shadow-sm border border-slate-100 hover:shadow-md transition flex flex-col justify-between relative";
                 
                 let displayAge = p.age || (p.birthDate ? calculateAge(p.birthDate) : 28);
+                let badgeTag = p.isSample 
+                    ? `<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">ตัวอย่าง</span>`
+                    : `<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">✓ ลงทะเบียนจริง</span>`;
+
+                let displayRating = p.isSample ? p.rating : "ยังไม่มีรีวิว";
 
                 card.innerHTML = `
                     <div>
-                        <div class="flex items-center gap-3 mb-3">
-                            <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-lg">${p.icon || '👩‍⚕️'}</div>
-                            <div>
-                                <h3 class="font-bold text-base text-slate-800">${p.name}</h3>
-                                <p class="text-[11px] text-teal-600 bg-teal-50 inline-block px-2 py-0.5 rounded-full mt-0.5 font-medium">✓ ${p.role}</p>
+                        <div class="flex items-center justify-between mb-2">
+                            <div class="flex items-center gap-3">
+                                <div class="w-12 h-12 bg-teal-100 rounded-full flex items-center justify-center text-teal-600 font-bold text-lg">${p.icon || '👩‍⚕️'}</div>
+                                <div>
+                                    <h3 class="font-bold text-base text-slate-800">${p.name}</h3>
+                                    <p class="text-[11px] text-teal-600 bg-teal-50 inline-block px-2 py-0.5 rounded-full mt-0.5 font-medium">${p.role}</p>
+                                </div>
                             </div>
                         </div>
+                        <div class="flex justify-end mb-2">${badgeTag}</div>
                         <div class="space-y-1 text-xs text-slate-600 mb-4 bg-slate-50 p-2.5 rounded-xl">
                             <p>📍 พื้นที่: <span class="font-semibold text-slate-700">${p.province}</span></p>
                             <p>🆔 รหัส: <span class="font-mono">${p.licenseId}</span></p>
-                            <p>⭐ ประสบการณ์: <span class="font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full text-[11px]">${p.exp || '3 ปี'} (อายุ ${displayAge} ปี)</span></p>
+                            <p>⭐ ประสบการณ์: <span class="font-bold text-emerald-700 bg-emerald-100/70 px-2 py-0.5 rounded-full text-[11px]">${p.exp || '1 ปี'} (อายุ ${displayAge} ปี)</span></p>
                         </div>
                     </div>
                     <div class="flex justify-between items-center text-xs font-medium border-t pt-3">
-                        <span class="text-slate-600">${p.rating}</span>
+                        <span class="text-slate-600 font-semibold">${displayRating}</span>
                         <button onclick='openProfile(${JSON.stringify(p)})' class="text-teal-600 hover:underline font-semibold">ดูประวัติ & จอง</button>
                     </div>
                 `;
@@ -1206,32 +1172,34 @@
             document.getElementById('modalId').textContent = provider.licenseId;
             
             let displayAge = provider.age || (provider.birthDate ? calculateAge(provider.birthDate) : 28);
-            document.getElementById('modalExp').textContent = `ประสบการณ์ ${provider.exp || '3 ปี'} • อายุ ${displayAge} ปี`;
+            document.getElementById('modalExp').textContent = `ประสบการณ์ ${provider.exp || '1 ปี'} • อายุ ${displayAge} ปี`;
             
-            document.getElementById('modalRating').textContent = provider.rating;
+            document.getElementById('modalRating').textContent = provider.isSample ? provider.rating : "ยังไม่มีรีวิว";
             document.getElementById('modalRate').textContent = provider.rate;
             document.getElementById('modalDesc').textContent = provider.desc;
 
             const reviewContainer = document.getElementById('reviewListContainer');
             reviewContainer.innerHTML = '';
 
-            let nurseReviews = (provider.reviews && provider.reviews.length >= 2) 
-                ? provider.reviews 
-                : (reviewsMaster[provider.shortRole] || reviewsMaster["RN"]);
+            let nurseReviews = provider.isSample ? (provider.reviews || reviewsMaster[provider.shortRole]) : (provider.reviews || []);
 
-            nurseReviews.forEach(rev => {
-                let revHtml = `
-                    <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
-                        <div class="flex justify-between items-center">
-                            <span class="font-bold text-slate-800 text-xs">${rev.name} (ผู้ใช้บริการจริง)</span>
-                            <span class="text-amber-500 text-[11px] font-bold">⭐⭐⭐⭐⭐ (5.0/5.0)</span>
+            if (nurseReviews.length === 0) {
+                reviewContainer.innerHTML = `<p class="text-xs text-slate-400 text-center py-4">ยังไม่มีรีวิวสำหรับผู้ให้บริการท่านนี้</p>`;
+            } else {
+                nurseReviews.forEach(rev => {
+                    let revHtml = `
+                        <div class="bg-slate-50 border border-slate-200/80 p-3.5 rounded-2xl space-y-1.5">
+                            <div class="flex justify-between items-center">
+                                <span class="font-bold text-slate-800 text-xs">${rev.name} (ผู้ใช้บริการจริง)</span>
+                                <span class="text-amber-500 text-[11px] font-bold">⭐⭐⭐⭐⭐ (5.0/5.0)</span>
+                            </div>
+                            <p class="text-slate-600 text-xs italic leading-relaxed">"${rev.text}"</p>
+                            <p class="text-[10px] text-slate-400">วันที่รีวิว: ${rev.date}</p>
                         </div>
-                        <p class="text-slate-600 text-xs italic leading-relaxed">"${rev.text}"</p>
-                        <p class="text-[10px] text-slate-400">วันที่รีวิว: ${rev.date}</p>
-                    </div>
-                `;
-                reviewContainer.insertAdjacentHTML('beforeend', revHtml);
-            });
+                    `;
+                    reviewContainer.insertAdjacentHTML('beforeend', revHtml);
+                });
+            }
 
             document.getElementById('profileModal').classList.remove('hidden');
         }
@@ -1279,7 +1247,7 @@
                 const startTime = document.getElementById('hourlyStartTime').value;
                 const endTime = document.getElementById('hourlyEndTime').value;
                 if (!count || !startTime || !endTime) {
-                    alert('กรุณาระบุจำนวนชั่วโมง และช่วงเวลา (กี่โมงถึงกี่โมง) ให้ครบถ้วน');
+                    alert('กรุณาระบุจำนวนชั่วโมง และช่วงเวลา ให้ครบถ้วน');
                     return;
                 }
             }
@@ -1319,7 +1287,7 @@
 
             customerBookings.unshift({
                 id: bookingId,
-                nurseName: selectedNurse ? (selectedNurse.name + ` (${selectedNurse.role})`) : 'คุณวรรณา ศรีสุข (ผู้ช่วยพยาบาล (PN))',
+                nurseName: selectedNurse ? (selectedNurse.name + ` (${selectedNurse.role})`) : 'ผู้ให้บริการ',
                 shift: shift,
                 address: address,
                 status: 'กำลังปฏิบัติงาน',
@@ -1346,19 +1314,14 @@
             };
 
             providerJobs[roleCode].unshift(newJob);
-            
-            if (roleCode !== "PN") {
-                if (!providerJobs["PN"]) providerJobs["PN"] = [];
-                providerJobs["PN"].unshift(newJob);
-            }
-
             saveJobsToStorage();
 
-            // นำเงินเข้าสู่ Escrow หลังบ้าน
+            // นำเงินถือไว้ส่วนกลางหลังบ้าน (Holding)
             adminEscrowTransfers.unshift({
                 id: bookingId,
                 customer: name,
-                provider: selectedNurse ? selectedNurse.name : 'คุณวรรณา ศรีสุข',
+                provider: selectedNurse ? selectedNurse.name : 'ผู้ให้บริการ',
+                providerId: selectedNurse ? selectedNurse.id : null,
                 amount: numRate,
                 status: 'holding',
                 time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
@@ -1374,9 +1337,6 @@
 
             triggerJobNotification(newJob);
 
-            currentProviderSession = null;
-            localStorage.removeItem('carelink_current_provider');
-
             updateNavbarState();
             updateDashboardBookings();
             updateProviderDashboardUI();
@@ -1386,9 +1346,6 @@
             showSection('customer-dashboard');
         }
 
-        /* -------------------------------------------------------------
-           ระบบการแจ้งเตือนงานเข้า (Job Notifications System)
-        ------------------------------------------------------------- */
         function triggerJobNotification(job) {
             try {
                 const sound = document.getElementById('notificationSound');
@@ -1519,6 +1476,7 @@
                 id: bookingId,
                 customer: testJob.customer,
                 provider: currentProviderSession.name,
+                providerId: currentProviderSession.id,
                 amount: 750,
                 status: 'holding',
                 time: 'เมื่อครู่'
@@ -1529,9 +1487,6 @@
             renderProviderJobs();
         }
 
-        /* -------------------------------------------------------------
-           ระบบการโอนเงินส่วนกลาง และการแจ้งปัญหาหลังบ้าน (Admin & Support)
-        ------------------------------------------------------------- */
         function openReportModal(userType) {
             document.getElementById('reportProblemModal').classList.remove('hidden');
         }
@@ -1576,6 +1531,7 @@
             }
         }
 
+        // แสดงผลหน้าหลังบ้านแอดมิน
         function renderAdminDashboardUI() {
             let holdingSum = adminEscrowTransfers.filter(t => t.status === 'holding' || t.status === 'processing').reduce((acc, curr) => acc + curr.amount, 0);
             let pendingTransfers = adminEscrowTransfers.filter(t => t.status === 'processing');
@@ -1585,7 +1541,6 @@
             document.getElementById('adminPendingTransfersCount').textContent = `${pendingTransfers.length} เคส`;
             document.getElementById('adminReportsCount').textContent = `${pendingReports.length} เคส`;
 
-            // แสดงตารางสั่งโอนเงิน
             const escrowContainer = document.getElementById('adminEscrowListContainer');
             escrowContainer.innerHTML = '';
 
@@ -1599,8 +1554,8 @@
                     if (item.status === 'holding') {
                         statusBadge = `<span class="bg-blue-100 text-blue-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">🔒 ถือเงินส่วนกลาง (ผู้รับการดูแลกำลังใช้บริการ)</span>`;
                     } else if (item.status === 'processing') {
-                        statusBadge = `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse">⏳ รอดำเนินการโอน 2-5 นาที (จบงานแล้ว)</span>`;
-                        actionBtn = `<button onclick="approveAdminTransfer('${item.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow">✓ อนุมัติโอนเงินเข้า Wallet ผู้ให้บริการ</button>`;
+                        statusBadge = `<span class="bg-amber-100 text-amber-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full animate-pulse">⏳ รอดำเนินการโอน (ผู้ให้บริการกดจบงานแล้ว)</span>`;
+                        actionBtn = `<button onclick="approveAdminTransfer('${item.id}')" class="bg-emerald-600 hover:bg-emerald-700 text-white font-bold text-xs px-3 py-1.5 rounded-lg shadow transition">✓ อนุมัติโอนเงินเข้า Wallet ผู้ให้บริการ</button>`;
                     } else {
                         statusBadge = `<span class="bg-emerald-100 text-emerald-800 text-[10px] font-bold px-2.5 py-0.5 rounded-full">✓ โอนเงินสำเร็จแล้ว</span>`;
                     }
@@ -1621,7 +1576,6 @@
                 });
             }
 
-            // แสดงรายการ Ticket แจ้งปัญหา
             const ticketsContainer = document.getElementById('adminSupportTicketsContainer');
             ticketsContainer.innerHTML = '';
 
@@ -1651,19 +1605,30 @@
             }
         }
 
+        // ข้อ 3: แอดมินอนุมัติโอนเงินส่วนกลางเข้า Wallet ผู้ให้บริการ
         function approveAdminTransfer(jobId) {
             let escrowItem = adminEscrowTransfers.find(t => t.id === jobId);
             if (escrowItem) {
-                escrowItem.status = 'transferred';
-                saveEscrowToStorage();
+                if (confirm(`ยืนยันการอนุมัติโอนเงินจำนวน ${escrowItem.amount.toLocaleString()} บาท ให้แก่ ${escrowItem.provider}?`)) {
+                    escrowItem.status = 'transferred';
+                    saveEscrowToStorage();
 
-                // โอนเงินเข้า Wallet ผู้ให้บริการ
-                walletBalance += escrowItem.amount;
-                saveWalletToStorage();
+                    // โอนเงินเข้า Wallet ของผู้ให้บริการจริง
+                    if (currentProviderSession && (currentProviderSession.id === escrowItem.providerId || currentProviderSession.name === escrowItem.provider)) {
+                        currentProviderSession.wallet = (currentProviderSession.wallet || 0) + escrowItem.amount;
+                        localStorage.setItem('carelink_current_provider', JSON.stringify(currentProviderSession));
+                    }
 
-                renderAdminDashboardUI();
-                updateWalletUI();
-                alert(`อนุมัติปล่อยเงินจำนวน ${escrowItem.amount.toLocaleString()} บาท เข้าสู่กระเป๋าผู้ให้บริการเรียบร้อยแล้ว!`);
+                    let pIdx = registeredProviders.findIndex(p => p.id === escrowItem.providerId || p.name === escrowItem.provider);
+                    if (pIdx !== -1) {
+                        registeredProviders[pIdx].wallet = (registeredProviders[pIdx].wallet || 0) + escrowItem.amount;
+                        saveProvidersToStorage();
+                    }
+
+                    renderAdminDashboardUI();
+                    updateWalletUI();
+                    alert(`✓ ทำรายการสำเร็จ! อนุมัติปล่อยเงินจำนวน ${escrowItem.amount.toLocaleString()} บาท เข้าสู่กระเป๋าผู้ให้บริการเรียบร้อยแล้ว`);
+                }
             }
         }
 
@@ -1677,28 +1642,45 @@
             }
         }
 
-        /* -------------------------------------------------------------
-           ระบบจัดการซ่อน / แสดง แถบ Navbar อย่างเด็ดขาด
-        ------------------------------------------------------------- */
         function updateNavbarState() {
             const guestArea = document.getElementById('guestAuthArea');
             const customerArea = document.getElementById('customerProfileArea');
             const providerArea = document.getElementById('providerProfileArea');
+            const mainNavLinks = document.getElementById('mainNavLinks');
+
+            const navHomeBtn = document.getElementById('navHomeBtn');
+            const navServicesBtn = document.getElementById('navServicesBtn');
+            const navFindBtn = document.getElementById('navFindBtn');
 
             guestArea.classList.add('hidden');
             customerArea.classList.add('hidden');
             providerArea.classList.add('hidden');
 
             if (currentProviderSession) {
+                if (mainNavLinks) mainNavLinks.classList.remove('hidden');
+                if (navHomeBtn) navHomeBtn.classList.add('hidden');
+                if (navFindBtn) navFindBtn.classList.add('hidden');
+                if (navServicesBtn) navServicesBtn.classList.remove('hidden');
+
                 providerArea.classList.remove('hidden');
                 document.getElementById('navProviderName').textContent = currentProviderSession.name;
                 updateNotificationBadge();
             } else if (loggedInCustomerPhone) {
+                if (mainNavLinks) mainNavLinks.classList.remove('hidden');
+                if (navHomeBtn) navHomeBtn.classList.remove('hidden');
+                if (navFindBtn) navFindBtn.classList.remove('hidden');
+                if (navServicesBtn) navServicesBtn.classList.remove('hidden');
+
                 customerArea.classList.remove('hidden');
                 document.getElementById('navCustomerName').textContent = loggedInCustomerName || "ผู้จอง";
                 document.getElementById('dashNameDisplay').textContent = loggedInCustomerName || "ผู้จอง";
                 document.getElementById('dashPhoneDisplay').textContent = loggedInCustomerPhone;
             } else {
+                if (mainNavLinks) mainNavLinks.classList.remove('hidden');
+                if (navHomeBtn) navHomeBtn.classList.remove('hidden');
+                if (navFindBtn) navFindBtn.classList.remove('hidden');
+                if (navServicesBtn) navServicesBtn.classList.remove('hidden');
+
                 guestArea.classList.remove('hidden');
             }
         }
@@ -1833,6 +1815,7 @@
             document.getElementById('registerModal').classList.add('hidden');
         }
 
+        // ข้อ 1: ข้อความแจ้งเตือนเมื่อลงทะเบียนเสร็จสิ้น
         function submitProviderRegister(e) {
             e.preventDefault();
             const fullName = document.getElementById('regFullName').value.trim();
@@ -1849,7 +1832,7 @@
             const desc = document.getElementById('regDesc').value.trim();
 
             if(!fullName || !birthDate || !role || !expYears || !province || !phone || !license || !rate || !bankName || !bankAccount || !bankOwner) {
-                alert('กรุณากรอกข้อมูลในช่องบังคับ (*) และเลือกวันเดือนปีเกิดให้ครบถ้วน');
+                alert('กรุณากรอกข้อมูลในช่องบังคับ (*) ให้ครบถ้วน');
                 return;
             }
 
@@ -1866,8 +1849,9 @@
 
             let parsedNumRate = parseFloat(rate.replace(/[^0-9.]/g, '')) || 750;
 
+            // ข้อ 2: บัญชีที่ลงทะเบียนใหม่ต้องไม่มีเงินสะสม และไม่มีดาวรีวิวเริ่มต้น
             let newProviderObj = {
-                id: `NEW-${province}-${Date.now()}`,
+                id: `REAL-${province}-${Date.now()}`,
                 phone: phone,
                 name: fullName,
                 birthDate: birthDate,
@@ -1877,7 +1861,7 @@
                 province: province,
                 exp: expYears,
                 licenseId: license,
-                rating: "⭐ 5.0 (สมาชิกใหม่)",
+                rating: "ยังไม่มีรีวิว",
                 desc: desc || `ผู้ให้บริการตำแหน่ง ${titleMap[role]} ประจำพื้นที่จังหวัด${province}`,
                 rate: rate.includes('บาท') ? rate : rate + ' บาท/กะ',
                 numericRate: parsedNumRate,
@@ -1885,17 +1869,24 @@
                 bankName: bankName,
                 bankAccount: bankAccount,
                 bankOwner: bankOwner,
-                reviews: reviewsMaster[shortRoleMap[role]] || reviewsMaster["RN"],
-                isVerified: false
+                reviews: [],
+                isVerified: true,
+                isSample: false,
+                wallet: 0
             };
 
-            allProviders.unshift(newProviderObj);
+            registeredProviders.unshift(newProviderObj);
             saveProvidersToStorage();
+
+            allProviders = [...registeredProviders, ...sampleProviders];
+            currentFilteredList = allProviders;
 
             closeRegister();
             document.getElementById('providerRegisterForm').reset();
+            renderNurses();
 
-            alert('ส่งข้อมูลลงทะเบียนสำเร็จ!\n\nขณะนี้ข้อมูลของคุณอยู่ระหว่างการตรวจสอบประวัติอาชญากรรมและใบประกอบวิชาชีพ โดยเจ้าหน้าที่จะอนุมัติภายใน 1-2 วันทำการ คุณจะสามารถเข้าสู่ระบบผู้ให้บริการได้หลังจากได้รับการอนุมัติ');
+            // แจ้งเตือนข้อความตรงตามรูปภาพที่ 1
+            alert("ส่งข้อมูลลงทะเบียนสำเร็จ!\n\nขณะนี้ข้อมูลของคุณอยู่ระหว่างการตรวจสอบประวัติอาชญากรรมและใบประกอบวิชาชีพ โดยเจ้าหน้าที่จะอนุมัติภายใน 1-2 วันทำการ คุณจะสามารถเข้าสู่ระบบผู้ให้บริการได้หลังจากได้รับการอนุมัติ");
             showSection('home');
         }
 
@@ -1910,12 +1901,29 @@
             e.preventDefault();
             const phoneInput = document.getElementById('loginPhoneInput').value.trim();
             
-            const foundProvider = allProviders.find(p => p.phone === phoneInput);
+            let foundProvider = registeredProviders.find(p => p.phone === phoneInput);
+
+            if (!foundProvider) {
+                foundProvider = allProviders.find(p => p.phone === phoneInput);
+            }
 
             if (foundProvider) {
                 currentProviderSession = foundProvider;
             } else {
-                currentProviderSession = defaultWannaProvider;
+                currentProviderSession = {
+                    id: `REAL-NEW-${Date.now()}`,
+                    phone: phoneInput,
+                    name: "คุณผู้ให้บริการใหม่",
+                    role: "ผู้ช่วยพยาบาล (PN)",
+                    shortRole: "PN",
+                    province: "กรุงเทพมหานคร",
+                    rating: "ยังไม่มีรีวิว",
+                    rate: "750 บาท/กะ",
+                    numericRate: 750,
+                    icon: "🧑‍⚕️",
+                    wallet: 0,
+                    isSample: false
+                };
             }
 
             localStorage.setItem('carelink_current_provider', JSON.stringify(currentProviderSession));
@@ -1933,6 +1941,7 @@
             alert(`เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${currentProviderSession.name}`);
         }
 
+        // ข้อ 2: แสดงผลหน้าแดชบอร์ดของผู้ให้บริการที่ล็อกอิน
         function updateProviderDashboardUI() {
             if (!currentProviderSession) return;
             
@@ -1941,10 +1950,22 @@
             document.getElementById('provDashProv').textContent = currentProviderSession.province;
             document.getElementById('provDashIcon').textContent = currentProviderSession.icon || '🧑‍⚕️';
             
-            if (document.getElementById('editProvRate')) document.getElementById('editProvRate').value = currentProviderSession.rate || '750 บาท/กะ';
-            if (document.getElementById('editProvProv')) document.getElementById('editProvProv').value = currentProviderSession.province || 'กาญจนบุรี';
+            // คะแนนรีวิวสำหรับผู้ให้บริการสมัครใหม่
+            const ratingElem = document.getElementById('provRatingDisplay');
+            if (ratingElem) {
+                if (currentProviderSession.isSample) {
+                    ratingElem.textContent = currentProviderSession.rating || "⭐ 5.0 (50+)";
+                } else {
+                    ratingElem.textContent = (currentProviderSession.reviews && currentProviderSession.reviews.length > 0) 
+                        ? currentProviderSession.rating 
+                        : "ยังไม่มีรีวิว";
+                }
+            }
 
-            const bankInfoText = `${currentProviderSession.bankName || 'ธนาคารกรุงเทพ'} • ${currentProviderSession.bankAccount || '097-332-1100'}`;
+            if (document.getElementById('editProvRate')) document.getElementById('editProvRate').value = currentProviderSession.rate || '750 บาท/กะ';
+            if (document.getElementById('editProvProv')) document.getElementById('editProvProv').value = currentProviderSession.province || 'กรุงเทพมหานคร';
+
+            const bankInfoText = `${currentProviderSession.bankName || 'ธนาคารกสิกรไทย'} • ${currentProviderSession.bankAccount || 'xxx-x-xxxxx-x'}`;
             document.getElementById('displayBankInfo').value = bankInfoText;
 
             renderProviderJobs();
@@ -2116,11 +2137,14 @@
             currentProviderSession.rate = newRate;
             currentProviderSession.province = newProv;
 
-            let idx = allProviders.findIndex(p => p.id === currentProviderSession.id);
+            let idx = registeredProviders.findIndex(p => p.id === currentProviderSession.id);
             if (idx !== -1) {
-                allProviders[idx].rate = newRate;
-                allProviders[idx].province = newProv;
+                registeredProviders[idx].rate = newRate;
+                registeredProviders[idx].province = newProv;
                 saveProvidersToStorage();
+                
+                allProviders = [...registeredProviders, ...sampleProviders];
+                currentFilteredList = allProviders;
                 renderNurses();
             }
 
@@ -2176,10 +2200,8 @@
             }
         }
 
-        // ฟังก์ชันจบงาน
+        // ข้อ 3: เมื่อผู้ให้บริการกดจบงาน -> ส่งเรื่องไปรออนุมัติที่หลังบ้านแอดมิน (สถานะ processing)
         function completeJob(jobId) {
-            alert('โปรดรอการโอนเงินเข้า 2-5 นาที กำลังทำการ...');
-
             let roleCode = currentProviderSession ? (currentProviderSession.shortRole || "PN") : "PN";
             let jobsList = providerJobs[roleCode] || [];
             let job = jobsList.find(j => j.id === jobId);
@@ -2193,36 +2215,31 @@
                 });
                 localStorage.setItem('carelink_bookings', JSON.stringify(customerBookings));
 
-                // เปลี่ยนสถานะในระบบ Escrow หลังบ้านให้พร้อมโอนเงิน
+                // อัปเดตสถานะในระบบพักเงินหลังบ้าน เป็น 'processing'
                 let escrowItem = adminEscrowTransfers.find(t => t.id === jobId);
                 if (escrowItem) {
                     escrowItem.status = 'processing';
                     saveEscrowToStorage();
+                } else {
+                    adminEscrowTransfers.unshift({
+                        id: jobId,
+                        customer: job.customer,
+                        provider: currentProviderSession ? currentProviderSession.name : 'ผู้ให้บริการ',
+                        providerId: currentProviderSession ? currentProviderSession.id : null,
+                        amount: job.numericRate || 750,
+                        status: 'processing',
+                        time: new Date().toLocaleTimeString('th-TH', { hour: '2-digit', minute: '2-digit' })
+                    });
+                    saveEscrowToStorage();
                 }
-
-                // สิมูเลชันระบบอัตโนมัติ 3 วินาทีเพื่อโอนเข้า Wallet
-                setTimeout(() => {
-                    if (escrowItem && escrowItem.status === 'processing') {
-                        escrowItem.status = 'transferred';
-                        saveEscrowToStorage();
-
-                        let addAmount = job.numericRate || 750;
-                        walletBalance += addAmount;
-                        saveWalletToStorage();
-
-                        updateProviderDashboardUI();
-                        updateDashboardBookings();
-                    }
-                }, 3000);
 
                 updateProviderDashboardUI();
                 updateDashboardBookings();
+
+                alert('บันทึกการจบงานเรียบร้อยแล้ว!\n\nรายการเงินโอนส่งต่อไปยังหลังบ้านแอดมินแล้ว (สถานะ: รอดำเนินการโอน)');
             }
         }
 
-        /* -------------------------------------------------------------
-           ระบบ Inbox / กล่องข้อความรวม
-        ------------------------------------------------------------- */
         function openInboxModal(role) {
             const container = document.getElementById('inboxListContainer');
             container.innerHTML = '';
@@ -2257,9 +2274,6 @@
             document.getElementById('inboxModal').classList.add('hidden');
         }
 
-        /* -------------------------------------------------------------
-           ระบบแชทเดี่ยว
-        ------------------------------------------------------------- */
         let chatStore = JSON.parse(localStorage.getItem('carelink_chat_store')) || {};
         let currentActiveChatCode = null;
 
@@ -2358,13 +2372,14 @@
         function requestWithdrawal() {
             const amountInput = document.getElementById('withdrawAmount').value;
             const amount = parseFloat(amountInput);
-            
+            let currentWallet = currentProviderSession ? (currentProviderSession.wallet || 0) : 0;
+
             if(!amount || amount <= 0) {
                 alert('กรุณากรอกจำนวนเงินที่ต้องการถอนให้ถูกต้อง');
                 return;
             }
-            if(amount > walletBalance) {
-                alert(`ยอดเงินในบัญชีของคุณไม่เพียงพอ`);
+            if(amount > currentWallet) {
+                alert(`ยอดเงินในบัญชีของคุณไม่เพียงพอ (ยอดที่ถอนได้: ${currentWallet.toLocaleString()} บาท)`);
                 return;
             }
 
@@ -2378,12 +2393,17 @@
 
             localStorage.setItem('carelink_withdrawals', JSON.stringify(withdrawalHistory));
 
-            walletBalance -= amount;
-            saveWalletToStorage();
+            currentProviderSession.wallet = currentWallet - amount;
+            localStorage.setItem('carelink_current_provider', JSON.stringify(currentProviderSession));
+
+            let pIdx = registeredProviders.findIndex(p => p.id === currentProviderSession.id);
+            if (pIdx !== -1) {
+                registeredProviders[pIdx].wallet = currentProviderSession.wallet;
+                saveProvidersToStorage();
+            }
+
             updateWalletUI();
-
             document.getElementById('withdrawAmount').value = '';
-
             updateWithdrawalHistoryUI();
 
             alert(`ทำรายการถอนเงินจำนวน ${amount.toLocaleString()} บาท สำเร็จเมื่อ ${timeString}!\nระบบจะโอนเข้าบัญชีธนาคารของคุณภายใน 2 ชั่วโมง`);
@@ -2437,7 +2457,7 @@
             alert('ขอบคุณสำหรับรีวิวของคุณครับ!');
         }
 
-        // เริ่มต้นโหลดข้อมูลเมื่อเปิดเว็บ
+        // เริ่มต้นโหลดระบบ
         updateNavbarState();
         updateProviderDashboardUI();
         updateDashboardBookings();
