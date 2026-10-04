@@ -150,7 +150,7 @@
 
             <div class="bg-white p-6 rounded-2xl shadow-sm border-t-4 border-cyan-500 space-y-3">
                 <div class="flex items-center gap-3">
-                    <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 font-bold text-xl">🧑‍⚕️</div>
+                    <div class="w-12 h-12 bg-cyan-100 rounded-full flex items-center justify-center text-cyan-600 font-bold text-xl">🧑‍⚕</div>
                     <div>
                         <h3 class="font-bold text-lg text-slate-800">ผู้ช่วยพยาบาล (PN - Practical Nurse)</h3>
                         <p class="text-xs text-cyan-600 font-medium">อัตราค่าบริการเริ่มต้น 600 - 800 บาท / กะ หรือรายชั่วโมง</p>
@@ -313,7 +313,7 @@
 
             <div class="space-y-4 pt-4 border-t">
                 <h3 class="font-bold text-base text-slate-800 flex items-center gap-2">
-                    <span>✅</span> ประวัติงานที่เสร็จสิ้นแล้ว (โอนเงินเข้ากระเป๋าเรียบร้อย)
+                    <span>✅</span> ประวัติงานที่เสร็จสิ้นแล้ว
                 </h3>
                 <div id="providerCompletedJobListContainer" class="space-y-3"></div>
             </div>
@@ -464,7 +464,7 @@
                 </div>
                 <div>
                     <label class="block font-semibold mb-1">รายละเอียดปัญหาที่เกิดขึ้น *</label>
-                    <textarea id="reportDetail" rows="4" required placeholder="อธิบายเหตุการณ์ หรือข้อสงสัยของคุณเพื่อ ให้ทีมงานแอดมินติดต่อช่วยเหลือ..." class="w-full p-2.5 border rounded-xl text-xs bg-white"></textarea>
+                    <textarea id="reportDetail" rows="4" required placeholder="อธิบายเหตุการณ์ หรือข้อสงสัยของคุณเพื่อให้ทีมงานแอดมินติดต่อช่วยเหลือ..." class="w-full p-2.5 border rounded-xl text-xs bg-white"></textarea>
                 </div>
                 <button type="submit" class="w-full bg-red-600 text-white py-3 rounded-xl font-bold hover:bg-red-700 transition shadow">
                     ส่งข้อมูลแจ้งเรื่องให้แอดมิน
@@ -1072,7 +1072,7 @@
                     ? `<span class="text-[10px] bg-slate-100 text-slate-500 px-2 py-0.5 rounded-full font-medium">ตัวอย่าง</span>`
                     : `<span class="text-[10px] bg-emerald-100 text-emerald-700 px-2 py-0.5 rounded-full font-bold">✓ ลงทะเบียนจริง</span>`;
 
-                let displayRating = p.isSample ? p.rating : "ยังไม่มีรีวิว";
+                let displayRating = p.isSample ? p.rating : (p.reviews && p.reviews.length > 0 ? p.rating : "ยังไม่มีรีวิว");
 
                 card.innerHTML = `
                     <div>
@@ -1174,7 +1174,7 @@
             let displayAge = provider.age || (provider.birthDate ? calculateAge(provider.birthDate) : 28);
             document.getElementById('modalExp').textContent = `ประสบการณ์ ${provider.exp || '1 ปี'} • อายุ ${displayAge} ปี`;
             
-            document.getElementById('modalRating').textContent = provider.isSample ? provider.rating : "ยังไม่มีรีวิว";
+            document.getElementById('modalRating').textContent = provider.isSample ? provider.rating : (provider.reviews && provider.reviews.length > 0 ? provider.rating : "ยังไม่มีรีวิว");
             document.getElementById('modalRate').textContent = provider.rate;
             document.getElementById('modalDesc').textContent = provider.desc;
 
@@ -1605,7 +1605,7 @@
             }
         }
 
-        // ข้อ 3: แอดมินอนุมัติโอนเงินส่วนกลางเข้า Wallet ผู้ให้บริการ
+        // แอดมินอนุมัติโอนเงินส่วนกลางเข้า Wallet ผู้ให้บริการ
         function approveAdminTransfer(jobId) {
             let escrowItem = adminEscrowTransfers.find(t => t.id === jobId);
             if (escrowItem) {
@@ -1613,7 +1613,22 @@
                     escrowItem.status = 'transferred';
                     saveEscrowToStorage();
 
-                    // โอนเงินเข้า Wallet ของผู้ให้บริการจริง
+                    // 1. อัปเดตสถานะงานในคิวงานผู้ให้บริการทุกหมวดเป็น completed
+                    Object.keys(providerJobs).forEach(roleKey => {
+                        let job = providerJobs[roleKey].find(j => j.id === jobId);
+                        if (job) {
+                            job.status = 'completed';
+                        }
+                    });
+                    saveJobsToStorage();
+
+                    // 2. อัปเดตสถานะงานฝั่งผู้ใช้บริการ (ผู้จอง)
+                    customerBookings.forEach(cb => {
+                        if (cb.id === jobId) cb.status = 'เสร็จสิ้นบริการ (จบงานแล้ว)';
+                    });
+                    localStorage.setItem('carelink_bookings', JSON.stringify(customerBookings));
+
+                    // 3. โอนเงินเข้า Wallet ของผู้ให้บริการจริง
                     if (currentProviderSession && (currentProviderSession.id === escrowItem.providerId || currentProviderSession.name === escrowItem.provider)) {
                         currentProviderSession.wallet = (currentProviderSession.wallet || 0) + escrowItem.amount;
                         localStorage.setItem('carelink_current_provider', JSON.stringify(currentProviderSession));
@@ -1625,7 +1640,11 @@
                         saveProvidersToStorage();
                     }
 
+                    // 4. รีเฟรช UI ทุกส่วน
                     renderAdminDashboardUI();
+                    renderProviderJobs();
+                    updateProviderDashboardUI();
+                    updateDashboardBookings();
                     updateWalletUI();
                     alert(`✓ ทำรายการสำเร็จ! อนุมัติปล่อยเงินจำนวน ${escrowItem.amount.toLocaleString()} บาท เข้าสู่กระเป๋าผู้ให้บริการเรียบร้อยแล้ว`);
                 }
@@ -1708,7 +1727,7 @@
             const completedContainer = document.getElementById('completedBookingListContainer');
 
             let activeItems = customerBookings.filter(b => b.status === 'กำลังปฏิบัติงาน' || b.status === 'รอดำเนินการ');
-            let completedItems = customerBookings.filter(b => b.status === 'เสร็จสิ้นบริการ (จบงานแล้ว)');
+            let completedItems = customerBookings.filter(b => b.status === 'เสร็จสิ้นบริการ (จบงานแล้ว)' || b.status === 'เสร็จสิ้นบริการ (รอโอนเงิน)');
 
             document.getElementById('statActiveCount').textContent = `${activeItems.length} รายการ`;
             document.getElementById('statCompletedCount').textContent = `${completedItems.length} รายการ`;
@@ -1815,7 +1834,7 @@
             document.getElementById('registerModal').classList.add('hidden');
         }
 
-        // ข้อ 1: ข้อความแจ้งเตือนเมื่อลงทะเบียนเสร็จสิ้น
+        // ลงทะเบียนสมาชิกใหม่ (เมื่อสมัครเสร็จให้พาไปหน้าเข้าสู่ระบบ)
         function submitProviderRegister(e) {
             e.preventDefault();
             const fullName = document.getElementById('regFullName').value.trim();
@@ -1849,7 +1868,6 @@
 
             let parsedNumRate = parseFloat(rate.replace(/[^0-9.]/g, '')) || 750;
 
-            // ข้อ 2: บัญชีที่ลงทะเบียนใหม่ต้องไม่มีเงินสะสม และไม่มีดาวรีวิวเริ่มต้น
             let newProviderObj = {
                 id: `REAL-${province}-${Date.now()}`,
                 phone: phone,
@@ -1872,7 +1890,7 @@
                 reviews: [],
                 isVerified: true,
                 isSample: false,
-                wallet: 0
+                wallet: 0 // ยอดเงินเริ่มต้นเป็น 0
             };
 
             registeredProviders.unshift(newProviderObj);
@@ -1881,13 +1899,23 @@
             allProviders = [...registeredProviders, ...sampleProviders];
             currentFilteredList = allProviders;
 
+            // ล้างประวัติงานค้างสำหรับบทบาทใหม่เพื่อไม่ให้ค้างรายการเดิม
+            providerJobs[newProviderObj.shortRole] = [];
+            saveJobsToStorage();
+
             closeRegister();
             document.getElementById('providerRegisterForm').reset();
             renderNurses();
 
-            // แจ้งเตือนข้อความตรงตามรูปภาพที่ 1
             alert("ส่งข้อมูลลงทะเบียนสำเร็จ!\n\nขณะนี้ข้อมูลของคุณอยู่ระหว่างการตรวจสอบประวัติอาชญากรรมและใบประกอบวิชาชีพ โดยเจ้าหน้าที่จะอนุมัติภายใน 1-2 วันทำการ คุณจะสามารถเข้าสู่ระบบผู้ให้บริการได้หลังจากได้รับการอนุมัติ");
+
+            // กลับไปยังหน้าหลัก และเปิดป๊อปอัพเข้าสู่ระบบ
             showSection('home');
+            openProviderLogin();
+            
+            if (document.getElementById('loginPhoneInput')) {
+                document.getElementById('loginPhoneInput').value = phone;
+            }
         }
 
         function openProviderLogin() {
@@ -1897,6 +1925,7 @@
             document.getElementById('providerLoginModal').classList.add('hidden');
         }
 
+        // สลับล็อกอินผู้ให้บริการ (ล้างประวัติการถอนและงานเดิมเพื่อไม่ให้ตกค้าง)
         function submitProviderLogin(e) {
             e.preventDefault();
             const phoneInput = document.getElementById('loginPhoneInput').value.trim();
@@ -1920,13 +1949,17 @@
                     rating: "ยังไม่มีรีวิว",
                     rate: "750 บาท/กะ",
                     numericRate: 750,
-                    icon: "🧑‍⚕️",
+                    icon: "🧑‍‍⚕️",
                     wallet: 0,
                     isSample: false
                 };
             }
 
             localStorage.setItem('carelink_current_provider', JSON.stringify(currentProviderSession));
+
+            // ล้างประวัติการถอนเงินเดิมที่ไม่ใช่ของผู้ให้บริการคนนี้
+            withdrawalHistory = [];
+            localStorage.removeItem('carelink_withdrawals');
 
             loggedInCustomerPhone = null;
             loggedInCustomerName = null;
@@ -1941,7 +1974,7 @@
             alert(`เข้าสู่ระบบสำเร็จ! ยินดีต้อนรับ ${currentProviderSession.name}`);
         }
 
-        // ข้อ 2: แสดงผลหน้าแดชบอร์ดของผู้ให้บริการที่ล็อกอิน
+        // แสดงผลหน้าแดชบอร์ดของผู้ให้บริการที่ล็อกอิน
         function updateProviderDashboardUI() {
             if (!currentProviderSession) return;
             
@@ -1950,7 +1983,6 @@
             document.getElementById('provDashProv').textContent = currentProviderSession.province;
             document.getElementById('provDashIcon').textContent = currentProviderSession.icon || '🧑‍⚕️';
             
-            // คะแนนรีวิวสำหรับผู้ให้บริการสมัครใหม่
             const ratingElem = document.getElementById('provRatingDisplay');
             if (ratingElem) {
                 if (currentProviderSession.isSample) {
@@ -1970,6 +2002,7 @@
 
             renderProviderJobs();
             updateWalletUI();
+            updateWithdrawalHistoryUI();
             updateNotificationBadge();
         }
 
@@ -1981,10 +2014,10 @@
             if (!currentProviderSession) return;
 
             let roleCode = currentProviderSession.shortRole || "PN";
-            let jobsList = providerJobs[roleCode] || providerJobs["PN"] || [];
+            let jobsList = providerJobs[roleCode] || [];
 
             let activeJobs = jobsList.filter(j => j.status === 'pending' || j.status === 'accepted');
-            let completedJobs = jobsList.filter(j => j.status === 'completed');
+            let completedJobs = jobsList.filter(j => j.status === 'pending_transfer' || j.status === 'completed');
 
             document.getElementById('provStatPending').textContent = `${activeJobs.filter(j => j.status === 'pending').length} งานใหม่`;
 
@@ -2076,14 +2109,26 @@
                 completedJobs.forEach(job => {
                     let card = document.createElement('div');
                     card.className = "bg-slate-50 border p-4 rounded-xl flex justify-between items-center text-xs";
-                    card.innerHTML = `
-                        <div>
-                            <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">✓ งานเสร็จสมบูรณ์</span>
-                            <p class="font-bold text-slate-800 mt-1">รหัสงาน: ${job.id} | ผู้จอง: ${job.customer}</p>
-                            <p class="text-slate-500">สถานที่: ${job.location}</p>
-                        </div>
-                        <span class="font-bold text-emerald-600 text-sm">+${job.price} (โอนเข้ากระเป๋าแล้ว)</span>
-                    `;
+                    
+                    if (job.status === 'pending_transfer') {
+                        card.innerHTML = `
+                            <div>
+                                <span class="bg-amber-100 text-amber-800 font-bold px-2 py-0.5 rounded">⏳ รอดำเนินการโอน</span>
+                                <p class="font-bold text-slate-800 mt-1">รหัสงาน: ${job.id} | ผู้จอง: ${job.customer}</p>
+                                <p class="text-slate-500">สถานที่: ${job.location}</p>
+                            </div>
+                            <span class="font-bold text-amber-600 text-xs bg-amber-50 px-3 py-1.5 rounded-lg border border-amber-200">⏳ รอดำเนินการโอนจากแอดมิน</span>
+                        `;
+                    } else {
+                        card.innerHTML = `
+                            <div>
+                                <span class="bg-emerald-100 text-emerald-800 font-bold px-2 py-0.5 rounded">✓ งานเสร็จสมบูรณ์</span>
+                                <p class="font-bold text-slate-800 mt-1">รหัสงาน: ${job.id} | ผู้จอง: ${job.customer}</p>
+                                <p class="text-slate-500">สถานที่: ${job.location}</p>
+                            </div>
+                            <span class="font-bold text-emerald-600 text-sm">✓ +${job.price} (โอนเข้ากระเป๋าแล้ว)</span>
+                        `;
+                    }
                     completedContainer.appendChild(card);
                 });
             }
@@ -2200,22 +2245,21 @@
             }
         }
 
-        // ข้อ 3: เมื่อผู้ให้บริการกดจบงาน -> ส่งเรื่องไปรออนุมัติที่หลังบ้านแอดมิน (สถานะ processing)
+        // เมื่อผู้ให้บริการกดจบงาน -> ตั้งสถานะเป็น pending_transfer (รอดำเนินการโอน)
         function completeJob(jobId) {
             let roleCode = currentProviderSession ? (currentProviderSession.shortRole || "PN") : "PN";
             let jobsList = providerJobs[roleCode] || [];
             let job = jobsList.find(j => j.id === jobId);
 
             if (job) {
-                job.status = 'completed';
+                job.status = 'pending_transfer';
                 saveJobsToStorage();
 
                 customerBookings.forEach(cb => {
-                    if (cb.id === jobId) cb.status = 'เสร็จสิ้นบริการ (จบงานแล้ว)';
+                    if (cb.id === jobId) cb.status = 'เสร็จสิ้นบริการ (รอโอนเงิน)';
                 });
                 localStorage.setItem('carelink_bookings', JSON.stringify(customerBookings));
 
-                // อัปเดตสถานะในระบบพักเงินหลังบ้าน เป็น 'processing'
                 let escrowItem = adminEscrowTransfers.find(t => t.id === jobId);
                 if (escrowItem) {
                     escrowItem.status = 'processing';
@@ -2236,7 +2280,7 @@
                 updateProviderDashboardUI();
                 updateDashboardBookings();
 
-                alert('บันทึกการจบงานเรียบร้อยแล้ว!\n\nรายการเงินโอนส่งต่อไปยังหลังบ้านแอดมินแล้ว (สถานะ: รอดำเนินการโอน)');
+                alert('บันทึกการจบงานเรียบร้อยแล้ว!\n\nสถานะงาน: ⏳ รอดำเนินการโอน (รายการเงินโอนส่งต่อไปยังหลังบ้านแอดมินเพื่ออนุมัติแล้ว)');
             }
         }
 
